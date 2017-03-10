@@ -59,9 +59,13 @@ void Engine::run()
 {
 	cout << "welcome to MCA" << endl;
 
+	printHelp();
+
 	char userData[100];
 
 	cin.getline(userData,sizeof(userData));
+	if (userData[0] == '\0')
+		userData[0] = 'h';
 
 	std::vector<std::string> parsedData = split(userData, ' ');
 
@@ -198,6 +202,8 @@ void Engine::run()
 		}
 
 		cin.getline(userData,sizeof(userData));
+		if (userData[0] == '\0')
+			userData[0] = 'h';
 		parsedData = split(userData, ' ');
 	}
 }
@@ -241,14 +247,22 @@ bool Engine::connectToServer(string address)
 	if (!this->serverCommunicator->isConnected())
 	{
 		this->serverCommunicator->connect(address);
-		return true;
+		if (this->serverCommunicator->isConnected())
+		{
+			cout << "connected" << endl;
+			return true;
+		}
+		else
+		{
+			cout << "error connecting";
+		}
 	}
 	else
 	{
 		cout << "error: already connected to a server" << endl;
-
-		return false;
 	}
+
+	return false;
 }
 
 void Engine::listConnectedUsers()
@@ -441,7 +455,22 @@ void Engine::disconnectChat()
 
 bool Engine::initiateChatRoom(string roomName)
 {
-	return true;
+	if (this->serverCommunicator->isConnected())
+	{
+		if (this->serverCommunicator->initiateChatRoom(roomName))
+		{
+			return true;
+		}
+		else
+		{
+			cout << "error: could not initiate chat room" << endl;
+		}
+	}
+	else
+	{
+		cout << "error: not connected to a server" << endl;
+		return false;
+	}
 }
 
 bool Engine::destroyChatRoom(string roomName)

@@ -143,6 +143,7 @@ bool ServerCommunicator::registerUser(string username, string password)
 						 	 	 	 	 	 	 password + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
+		memset(buffer,0, sizeof(buffer));
 		this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
 		vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
@@ -194,12 +195,17 @@ void ServerCommunicator::listUsers()
 			string message = numberToString(LIST_USERS) + MESSAGE_DELIMITER;
 			this->tcpsock->send(message);
 			char buffer[MAX_MESSAGE_BYTES];
-			this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+			int length = this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+			buffer[length] = '\0';
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
 			if(parsedData.size() > 1)
 			{
-				cout << "users " << parsedData[1] << endl;
+				cout << "users: " << endl;
+				for(int i=1;i<parsedData.size();i++)
+				{
+					cout <<  parsedData[i] << endl;
+				}
 			}
 			else
 			{
@@ -257,6 +263,27 @@ bool ServerCommunicator::exitChatRoom()
 	if (this->isConnected())
 	{
 		string message = numberToString(EXIT_CHATROOM) + MESSAGE_DELIMITER;
+		this->tcpsock->send(message);
+		char buffer[MAX_MESSAGE_BYTES];
+		this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+		vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
+
+		if(parsedData[0] == numberToString(SUCCESS))
+			return true;
+	}
+	else
+	{
+		cout << "not connected to server" << endl;
+	}
+
+	return false;
+}
+
+bool ServerCommunicator::initiateChatRoom(string roomName)
+{
+	if (this->isConnected())
+	{
+		string message = numberToString(CREATE_CHATROOM) + MESSAGE_DELIMITER + roomName + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
 		this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);

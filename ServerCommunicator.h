@@ -12,6 +12,8 @@
 #include "Parser.h"
 #include "TCPSocket.h"
 #include <vector>
+#include <stdio.h>
+#include <string.h>
 
 using namespace std;
 
@@ -34,6 +36,7 @@ public:
 	void listUsers();
 	bool destroyChatRoom(string roomName);
 	bool exitChatRoom();
+	bool initiateChatRoom(string roomName);
 
 private:
 	TCPSocket* tcpsock;
