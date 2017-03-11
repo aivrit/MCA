@@ -40,6 +40,11 @@ Engine::~Engine() {
 	delete this->udpListener;
 }
 
+ChatRoom* Engine::getChatRoom()
+{
+	return this->chatRoom;
+}
+
 UserChat* Engine::getUserChat()
 {
 	return this->userChat;
@@ -345,6 +350,7 @@ bool Engine::openChat(string username)
 			}
 			else
 			{
+				delete this->userChat;
 				cout << "user" << username << "refused connection or is not active" << endl;
 			}
 		}

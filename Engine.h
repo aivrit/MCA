@@ -47,6 +47,7 @@ public:
 	UDPListener* getUdpListener();
 	int getStatus();
 	UserChat* getUserChat();
+	ChatRoom* getChatRoom();
 
 private:
 	int status;

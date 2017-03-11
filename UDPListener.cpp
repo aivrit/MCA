@@ -14,7 +14,7 @@ void flushBuffer(char* buffer)
 {
 	for(int i=0;i<sizeof(buffer); i++)
 	{
-		buffer[i] = 0;
+		buffer[i] = '\0';
 	}
 }
 
@@ -54,7 +54,8 @@ void UDPListener::run(Engine* engine)
 			 }
 			 else if (engine->getStatus() == OPEN_CHAT_ROOM)
 			 {
-
+				 	 if (parsedData.size() > 1)
+				 		 engine->getChatRoom()->recv(parsedData[1], header, this->udpsock->fromAddr());
 			 }
 			 else if(engine->getStatus() == NO_OPEN_SESSION)
 			 {

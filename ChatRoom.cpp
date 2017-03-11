@@ -22,6 +22,7 @@ ChatRoom::ChatRoom(vector<string> users, string username) {
 
 ChatRoom::~ChatRoom() {
 	// TODO Auto-generated destructor stub
+	this->send("", EXIT_CHATROOM);
 	delete this->udpSocket;
 }
 
@@ -40,6 +41,10 @@ void ChatRoom::recv(string message, int header, string address)
 	else if (header == SEND_MSG_TO_PEER)
 	{
 		cout << "[" << AddressUsernameDict[address] << "]: " <<  message << endl;
+	}
+	else if (header == EXIT_CHATROOM)
+	{
+		AddressUsernameDict.erase(address);
 	}
 }
 
