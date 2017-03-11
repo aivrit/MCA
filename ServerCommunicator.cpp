@@ -308,6 +308,7 @@ void ServerCommunicator::disconnect()
 		this->tcpsock->send(message);
 		this->tcpsock->close();
 		delete this->tcpsock;
+		this->tcpsock = NULL;
 	}
 }
 
