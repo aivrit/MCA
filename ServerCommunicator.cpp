@@ -43,9 +43,14 @@ void ServerCommunicator::listConnectedUsers()
 		this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
 		vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
-		if(parsedData.size() > 1)
+		if(parsedData[0] == numberToString(SUCCESS))
 		{
-			cout << "connected users: " << parsedData[1] << endl;
+			string message = "";
+			for (int i=1; i<parsedData.size(); i++)
+			{
+				message += parsedData[i] + " : ";
+			}
+			cout << "connected users: " << message << endl;
 		}
 		else
 		{
