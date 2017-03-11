@@ -477,6 +477,8 @@ bool Engine::initiateChatRoom(string roomName)
 		cout << "error: not connected to a server" << endl;
 		return false;
 	}
+
+	return false;
 }
 
 bool Engine::destroyChatRoom(string roomName)
