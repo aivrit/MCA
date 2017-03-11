@@ -373,17 +373,18 @@ bool Engine::openChatRoom(string roomName)
 	{
 		vector<string> roomUsersList = this->serverCommunicator->openChatRoom(roomName);
 
-		if(roomUsersList.size() > 0)
+		if(roomUsersList.size() > 0 && roomUsersList[0] == numberToString(SUCCESS))
+		{
+			this->chatRoom = new ChatRoom(roomUsersList, this->username);
+			this->status = OPEN_CHAT_ROOM;
+			cout << "you are now in chat room " << roomName << endl;
+			return true;
+		}
+		else
 		{
 			cout << "error opening chat room" << endl;
 			return false;
 		}
-
-		this->chatRoom = new ChatRoom(roomUsersList, this->username);
-		this->status = OPEN_CHAT_ROOM;
-		cout << "you are now in chat room " << roomName << endl;
-		return true;
-
 	}
 	else
 	{
@@ -465,6 +466,7 @@ bool Engine::initiateChatRoom(string roomName)
 	{
 		if (this->serverCommunicator->initiateChatRoom(roomName))
 		{
+			cout << "created chat room " << roomName << endl;
 			return true;
 		}
 		else
