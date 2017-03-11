@@ -63,6 +63,10 @@ void UDPListener::run(Engine* engine)
 				 {
 					 engine->acceptChat(this->udpsock->fromAddr());
 				 }
+				 else if (header == CONNECT_TO_PEER_RUN && engine->getUserChat() != NULL)
+				 {
+					 engine->getUserChat()->recv("", header, this->udpsock->fromAddr());
+				 }
 			 }
 		}
 
