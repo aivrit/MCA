@@ -44,6 +44,8 @@ bool UserChat::send(string message, int header)
 	if (this->udpSocket->sendTo(message_complete, address, SEND_PORT) == -1)
 		return false;
 
+	cout << "sent to : " << address << ":" << numberToString(SEND_PORT) << " message: "
+			<< message_complete << endl;
 	return true;
 }
 
