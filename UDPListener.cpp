@@ -39,7 +39,7 @@ void UDPListener::run(Engine* engine)
 	while(true)
 	{
 		recvlen = this->udpsock->recv(buffer, MAX_MESSAGE_BYTES);
-
+		cout << "recieved: " << buffer << endl;
 		if (recvlen > 0)
 		{
 			// michael needs to send me the delimiter after the message too!

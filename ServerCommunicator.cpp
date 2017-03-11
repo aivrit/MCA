@@ -175,7 +175,7 @@ string ServerCommunicator::openChat(string username)
 		this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
 		vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
-		if(parsedData.size() > 1)
+		if(parsedData[0] == numberToString(SUCCESS) && parsedData.size() > 1)
 		{
 			return parsedData[1];
 		}

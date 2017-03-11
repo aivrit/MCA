@@ -351,7 +351,7 @@ bool Engine::openChat(string username)
 			else
 			{
 				delete this->userChat;
-				cout << "user" << username << "refused connection or is not active" << endl;
+				cout << "user " << username << " refused connection or is not active" << endl;
 			}
 		}
 		else
@@ -373,17 +373,18 @@ bool Engine::openChatRoom(string roomName)
 	{
 		vector<string> roomUsersList = this->serverCommunicator->openChatRoom(roomName);
 
-		if(roomUsersList.size() > 0)
+		if(roomUsersList.size() > 0 && roomUsersList[0] == numberToString(SUCCESS))
+		{
+			this->chatRoom = new ChatRoom(roomUsersList, this->username);
+			this->status = OPEN_CHAT_ROOM;
+			cout << "you are now in chat room " << roomName << endl;
+			return true;
+		}
+		else
 		{
 			cout << "error opening chat room" << endl;
 			return false;
 		}
-
-		this->chatRoom = new ChatRoom(roomUsersList, this->username);
-		this->status = OPEN_CHAT_ROOM;
-		cout << "you are now in chat room " << roomName << endl;
-		return true;
-
 	}
 	else
 	{
@@ -423,6 +424,25 @@ bool Engine::sendMessage(string message)
 
 void Engine::listStatus()
 {
+	if (this->serverCommunicator->isConnected())
+	{
+		switch (this->status)
+		{
+			case NO_OPEN_SESSION:
+				cout << "status: you are connected to server and not in a chat or chat room." << endl;
+				break;
+			case OPEN_CHAT_ROOM:
+				cout << "status: you are connected to server and in a chat room." << endl;
+				break;
+			case OPEN_USER_CHAT:
+				cout << "status: you are connected to server and in a chat with another user" << endl;
+				break;
+		}
+	}
+	else
+	{
+		cout << "status: you are not connected to server" << endl;
+	}
 }
 
 void Engine::disconnectServer()
@@ -465,6 +485,7 @@ bool Engine::initiateChatRoom(string roomName)
 	{
 		if (this->serverCommunicator->initiateChatRoom(roomName))
 		{
+			cout << "created chat room " << roomName << endl;
 			return true;
 		}
 		else
