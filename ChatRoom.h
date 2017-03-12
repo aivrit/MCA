@@ -19,7 +19,7 @@ using namespace std;
 
 class ChatRoom {
 public:
-	ChatRoom(vector<string> users, string username);
+	ChatRoom(vector<string> &users, string username);
 	virtual ~ChatRoom();
 	bool sendMessage(string message);
 	void recv(string message, int header, string address);

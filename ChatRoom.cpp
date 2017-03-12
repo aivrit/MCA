@@ -10,7 +10,7 @@
 static const int SEND_PORT = 5001;
 static const int RECV_PORT = 9999;
 
-ChatRoom::ChatRoom(vector<string> users, string username) {
+ChatRoom::ChatRoom(vector<string> &users, string username) {
 	for(vector<string>::size_type i = 1; i < users.size(); i+=2)
 	{
 	    this->AddressUsernameDict[users[i]] = users[i+1];
@@ -52,11 +52,14 @@ bool ChatRoom::send(string message, int header)
 {
 	string message_complete = "";
 
-	for(map<string, string>::value_type& curr : AddressUsernameDict)
+	if (!AddressUsernameDict.empty())
 	{
-		message_complete = numberToString(header) + MESSAGE_DELIMITER + message + MESSAGE_DELIMITER;
-		// TODO bad inputs
-		this->udpSocket->sendTo(message_complete, curr.first, SEND_PORT);
+		for(map<string, string>::value_type& curr : AddressUsernameDict)
+		{
+			message_complete = numberToString(header) + MESSAGE_DELIMITER + message + MESSAGE_DELIMITER;
+			// TODO bad inputs
+			this->udpSocket->sendTo(message_complete, curr.first, SEND_PORT);
+		}
 	}
 
 	return true;

@@ -29,7 +29,7 @@ public:
 	bool login(string username, string password);
 	bool registerUser(string username, string password);
 	string openChat(string username);
-	vector<string> openChatRoom(string roomName);
+	bool openChatRoom(string roomName, char* buffer);
 	void disconnect();
 	string checkInitChat(string address);
 	bool closeSessionWithPeer();

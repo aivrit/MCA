@@ -223,23 +223,22 @@ void ServerCommunicator::listUsers()
 		}
 }
 
-vector<string> ServerCommunicator::openChatRoom(string roomName)
+bool ServerCommunicator::openChatRoom(string roomName, char* buffer)
 {
-	vector<string> parsedData;
 	if (this->isConnected())
 		{
 			string message = numberToString(JOIN_CHATROOM) + MESSAGE_DELIMITER + roomName + MESSAGE_DELIMITER;
 			this->tcpsock->send(message);
-			char buffer[MAX_MESSAGE_BYTES];
-			this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
-			 parsedData = split(buffer, MESSAGE_DELIMITER);
+			int len = this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+			buffer[len] = '\0';
+			return true;
 		}
 		else
 		{
 			cout << "not connected to server" << endl;
 		}
 
-		return parsedData;
+		return false;;
 }
 
 bool ServerCommunicator::destroyChatRoom(string roomName)
