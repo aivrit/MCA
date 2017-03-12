@@ -70,6 +70,7 @@ void UserChat::acceptChat()
 {
 	this->send("", CONNECT_TO_PEER_RUN);
 	this->status = STATUS_INITIATED;
+	cout << "you are now in chat with user: " << this->username << endl;
 }
 
 
