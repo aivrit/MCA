@@ -83,7 +83,7 @@ void UserChat::recv(string message, int header, string address)
 		}
 		else if (header == CLOSE_SESSION_WITH_PEER)
 		{
-			cout << "peer closed chat. press x to exit." << endl;
+			cout << "peer closed chat. press cs to exit." << endl;
 		}
 	}
 	else if (this->status == STATUS_INITIATING && address == this->address &&

@@ -80,9 +80,14 @@ void ServerCommunicator::listChatRooms()
 		{
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
-			if(parsedData.size() > 1)
+			if(parsedData[0] == numberToString(SUCCESS))
 			{
-				cout << "chat rooms: " << parsedData[1] << endl;
+				string message = "";
+				for (int i=1; i<parsedData.size(); i++)
+				{
+					message += parsedData[i] + " : ";
+				}
+				cout << "chat rooms : " << message << endl;
 			}
 			else
 			{
@@ -107,13 +112,19 @@ void ServerCommunicator::listChatRoomUsers(string roomName)
 		string message = numberToString(LIST_CHAT_ROOM_USERS) + MESSAGE_DELIMITER + roomName + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
-		if (this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES) > 0)
+		int length = this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+		if (length > 0)
 		{
+			buffer[length] = '\0';
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
 			if(parsedData.size() > 1)
 			{
-				cout << "users in chat room: " << parsedData[1] << endl;
+				cout << "users: " << endl;
+				for(int i=1;i<parsedData.size();i++)
+				{
+					cout <<  parsedData[i] << endl;
+				}
 			}
 			else
 			{

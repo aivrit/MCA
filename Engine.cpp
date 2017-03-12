@@ -325,8 +325,9 @@ bool Engine::login(string username, string password)
 	else
 	{
 		cout << "error: not connected to a server" << endl;
-		return false;
 	}
+
+	return false;
 }
 
 bool Engine::registerUser(string username, string password)
@@ -481,6 +482,7 @@ void Engine::disconnectChat()
 {
 	if(this->status == OPEN_USER_CHAT)
 	{
+		this->userChat->send("", CLOSE_SESSION_WITH_PEER);
 		this->serverCommunicator->closeSessionWithPeer();
 		delete this->userChat;
 		this->userChat = NULL;
@@ -488,6 +490,7 @@ void Engine::disconnectChat()
 	}
 	else if(this->status == OPEN_CHAT_ROOM)
 	{
+		this->chatRoom->send("", EXIT_CHATROOM);
 		this->serverCommunicator->exitChatRoom();
 		delete this->chatRoom;
 		this->chatRoom = NULL;
