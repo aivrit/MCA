@@ -40,7 +40,7 @@ void ServerCommunicator::listConnectedUsers()
 		string message = numberToString(LIST_CONNECTED_USERS) + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
-		if(this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES > 0))
+		if(this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES) > 0)
 		{
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
