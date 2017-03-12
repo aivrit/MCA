@@ -163,7 +163,7 @@ void Engine::run()
 			{
 				for (int i=1; i<parsedData.size(); i++)
 				{
-					message += parsedData[i];
+					message += parsedData[i] + " ";
 				}
 				this->sendMessage(message);
 			}

@@ -29,6 +29,7 @@ ChatRoom::~ChatRoom() {
 bool ChatRoom::sendMessage(string message)
 {
 	this->send(message, SEND_MSG_TO_PEER);
+	cout << "[Me]: " << message << endl;
 	return true;
 }
 
@@ -57,6 +58,5 @@ bool ChatRoom::send(string message, int header)
 		for (std::map<string,string>::iterator it=AddressUsernameDict.begin(); it!=AddressUsernameDict.end(); ++it)
 			this->udpSocket->sendTo(message_complete, it->first, SEND_PORT);
 	}
-
 	return true;
 }
