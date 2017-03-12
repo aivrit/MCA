@@ -52,7 +52,7 @@ TCPSocket::TCPSocket(int port){
 
 
 TCPSocket::TCPSocket(const string& peerIp, int port){
-	//cout<<"openning new client socket"<<endl;
+	//warning: this type of socket has timeout in recv!
 
 	/**
 	 * int socket(int domain, int type, int protocol);
@@ -62,6 +62,7 @@ TCPSocket::TCPSocket(const string& peerIp, int port){
 	 * 0 - default protocol type
 	 */
 	socket_fd = ::socket (AF_INET, SOCK_STREAM, 0);
+	struct timeval timeout;
 
 	// clear the s_in struct
 	bzero((char *) &peerAddr, sizeof(peerAddr));  /* They say you must do this    */
@@ -70,6 +71,14 @@ TCPSocket::TCPSocket(const string& peerIp, int port){
 	peerAddr.sin_family = (short)AF_INET;
 	peerAddr.sin_addr.s_addr = inet_addr(peerIp.data());
 	peerAddr.sin_port = htons((u_short)port);
+
+	// set the timeout for recv
+	timeout.tv_sec = 10;
+	timeout.tv_usec = 0;
+	if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)))
+	{
+		cout << "error: setsockopt failed \n" << endl;
+	}
 
 	if (connect(socket_fd, (struct sockaddr *)&peerAddr, sizeof(peerAddr)) < 0)
 	{
