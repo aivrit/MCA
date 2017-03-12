@@ -75,10 +75,10 @@ TCPSocket::TCPSocket(const string& peerIp, int port){
 	// set the timeout for recv
 	timeout.tv_sec = 60;
 	timeout.tv_usec = 0;
-	if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)))
+	/*if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)))
 	{
 		cout << "error: setsockopt failed \n" << endl;
-	}
+	}*/
 
 	if (connect(socket_fd, (struct sockaddr *)&peerAddr, sizeof(peerAddr)) < 0)
 	{
