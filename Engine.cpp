@@ -428,7 +428,15 @@ bool Engine::sendMessage(string message)
 	}
 	else if (this->status == OPEN_CHAT_ROOM)
 	{
-
+		if (this->chatRoom->sendMessage(message))
+		{
+			return true;
+		}
+		else
+		{
+			cout << "problem sending message" << endl;
+			return false;
+		}
 	}
 
 	return true;

@@ -50,16 +50,12 @@ void ChatRoom::recv(string message, int header, string address)
 
 bool ChatRoom::send(string message, int header)
 {
-	string message_complete = "";
+	string message_complete = numberToString(header) + MESSAGE_DELIMITER + message + MESSAGE_DELIMITER;
 
 	if (!AddressUsernameDict.empty())
 	{
-		for(map<string, string>::value_type& curr : AddressUsernameDict)
-		{
-			message_complete = numberToString(header) + MESSAGE_DELIMITER + message + MESSAGE_DELIMITER;
-			// TODO bad inputs
-			this->udpSocket->sendTo(message_complete, curr.first, SEND_PORT);
-		}
+		for (std::map<string,string>::iterator it=AddressUsernameDict.begin(); it!=AddressUsernameDict.end(); ++it)
+			this->udpSocket->sendTo(message_complete, it->first, SEND_PORT);
 	}
 
 	return true;
