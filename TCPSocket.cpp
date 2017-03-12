@@ -73,7 +73,7 @@ TCPSocket::TCPSocket(const string& peerIp, int port){
 	peerAddr.sin_port = htons((u_short)port);
 
 	// set the timeout for recv
-	timeout.tv_sec = 10;
+	timeout.tv_sec = 60;
 	timeout.tv_usec = 0;
 	if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)))
 	{
