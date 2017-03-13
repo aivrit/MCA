@@ -40,8 +40,10 @@ void ServerCommunicator::listConnectedUsers()
 		string message = numberToString(LIST_CONNECTED_USERS) + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
-		if(this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES) > 0)
+		int len = this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+		if(len > 0)
 		{
+			buffer[len] = '\0';
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
 			if(parsedData[0] == numberToString(SUCCESS))
@@ -76,8 +78,10 @@ void ServerCommunicator::listChatRooms()
 		string message = numberToString(LIST_CHAT_ROOMS) + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
-		if (this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES) > 0)
+		int len = this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES);
+		if (len > 0)
 		{
+			buffer[len] = '\0';
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
 			if(parsedData[0] == numberToString(SUCCESS))

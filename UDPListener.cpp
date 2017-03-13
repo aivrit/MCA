@@ -79,6 +79,6 @@ void UDPListener::run(Engine* engine)
 
 string UDPListener::get_listen_port()
 {
-	cout << "listen port: " << this->udpsock->fromPort();
+	//cout << "listen port: " << this->udpsock->fromPort();
 	return this->udpsock->fromPort();
 }

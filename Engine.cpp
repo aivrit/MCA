@@ -414,7 +414,7 @@ bool Engine::sendMessage(string message)
 {
 	if (this->status == NO_OPEN_SESSION)
 	{
-		cout << "not connected to server" << endl;
+		cout << "not in chat" << endl;
 		return false;
 	}
 	else if (this->status == OPEN_USER_CHAT)
@@ -490,6 +490,7 @@ void Engine::disconnectChat()
 		delete this->userChat;
 		this->userChat = NULL;
 		this->status = NO_OPEN_SESSION;
+		cout << "disconnected from chat." << endl;
 	}
 	else if(this->status == OPEN_CHAT_ROOM)
 	{
@@ -498,6 +499,7 @@ void Engine::disconnectChat()
 		delete this->chatRoom;
 		this->chatRoom = NULL;
 		this->status = NO_OPEN_SESSION;
+		cout << "disconnected from chat room." << endl;
 	}
 	else
 	{
