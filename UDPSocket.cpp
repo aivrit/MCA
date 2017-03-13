@@ -12,6 +12,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/un.h>
+#include <netinet/in.h>
 
 UDPSocket::UDPSocket(int port){
 	socket_fd = socket (AF_INET, SOCK_DGRAM, 0);
@@ -25,6 +31,11 @@ UDPSocket::UDPSocket(int port){
 		if (bind(socket_fd, (struct sockaddr *)&s_in, sizeof(s_in))<0){
 			cout<<"Error naming channel"<<endl;
 		}
+
+		struct sockaddr_in  s_get;
+		unsigned int len = sizeof(s_get);
+		getsockname(socket_fd, (struct sockaddr *)&s_get, &len);
+		this->listen_port = numberToString(ntohs(s_get.sin_port));
 	}
 }
 
@@ -66,7 +77,7 @@ string UDPSocket::fromAddr(){
 
 string UDPSocket::fromPort(){
 	// TODO: CHECk
-	return numberToString(ntohs((from.sin_port)));
+	return this->listen_port;
 
 }
 

@@ -21,6 +21,7 @@ using namespace std;
 class UDPSocket{
 	struct sockaddr_in from;
 	int socket_fd;
+	string listen_port;
 
 public:
 	UDPSocket(int port = 9999);
