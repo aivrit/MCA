@@ -25,7 +25,7 @@ public:
 	UDPListener();
 	virtual ~UDPListener();
 	void run(Engine* engine);
-
+	string get_listen_port();
 private:
 	UDPSocket* udpsock;
 };

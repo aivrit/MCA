@@ -64,5 +64,11 @@ string UDPSocket::fromAddr(){
 
 }
 
+string UDPSocket::fromPort(){
+	// TODO: CHECk
+	return numberToString(ntohs((from.sin_port)));
+
+}
+
 
 

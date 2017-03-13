@@ -13,6 +13,7 @@
 #include <strings.h>
 #include <stdio.h>
 #include <iostream>
+#include "Parser.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
 	int reply(const string& msg);
 	void close();
 	string fromAddr();
+	string fromPort();
 };
 
 

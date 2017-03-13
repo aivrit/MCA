@@ -26,12 +26,12 @@ public:
 	void listConnectedUsers();
 	void listChatRooms();
 	void listChatRoomUsers(string roomName);
-	bool login(string username, string password);
+	bool login(string username, string password, string listen_port);
 	bool registerUser(string username, string password);
 	string openChat(string username);
 	bool openChatRoom(string roomName, char* buffer);
 	void disconnect();
-	string checkInitChat(string address);
+	string checkInitChat(string address, string port);
 	bool closeSessionWithPeer();
 	void listUsers();
 	bool destroyChatRoom(string roomName);

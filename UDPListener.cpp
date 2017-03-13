@@ -7,7 +7,7 @@
 
 #include "UDPListener.h"
 
-static const int LISTEN_PORT = 5001;
+static const int LISTEN_PORT = 0;
 static const int MAX_MESSAGE_BYTES = 250;
 
 void flushBuffer(char* buffer)
@@ -49,23 +49,25 @@ void UDPListener::run(Engine* engine)
 
 			 if (engine->getStatus() == OPEN_USER_CHAT)
 			 {
-				 if (parsedData.size() > 1)
-					 engine->getUserChat()->recv(parsedData[1], header, this->udpsock->fromAddr());
+				 if (parsedData.size() > 2)
+					 engine->getUserChat()->recv(parsedData[2], header, this->udpsock->fromAddr(), parsedData[1]);
 			 }
 			 else if (engine->getStatus() == OPEN_CHAT_ROOM)
 			 {
-				 	 if (parsedData.size() > 1)
-				 		 engine->getChatRoom()->recv(parsedData[1], header, this->udpsock->fromAddr());
+				 	 if (parsedData.size() > 2)
+				 		 engine->getChatRoom()->recv(parsedData[2], header, this->udpsock->fromAddr(), parsedData[1]);
 			 }
 			 else if(engine->getStatus() == NO_OPEN_SESSION)
 			 {
 				 if (header == CONNECT_TO_PEER_INIT)
 				 {
-					 engine->acceptChat(this->udpsock->fromAddr());
+					 if (parsedData.size() > 1)
+					 engine->acceptChat(this->udpsock->fromAddr(), parsedData[1]);
 				 }
 				 else if (header == CONNECT_TO_PEER_RUN && engine->getUserChat() != NULL)
 				 {
-					 engine->getUserChat()->recv("", header, this->udpsock->fromAddr());
+					 if (parsedData.size() > 1)
+						 engine->getUserChat()->recv("", header, this->udpsock->fromAddr(), parsedData[1]);
 				 }
 			 }
 		}
@@ -73,4 +75,9 @@ void UDPListener::run(Engine* engine)
 		flushBuffer(buffer);
 	}
 
+}
+
+string UDPListener::get_listen_port()
+{
+	return this->udpsock->fromPort();
 }

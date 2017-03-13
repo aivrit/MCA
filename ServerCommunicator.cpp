@@ -141,12 +141,12 @@ void ServerCommunicator::listChatRoomUsers(string roomName)
 		cout << "not connected to server" << endl;
 	}
 }
-bool ServerCommunicator::login(string username, string password)
+bool ServerCommunicator::login(string username, string password, string listen_port)
 {
 	if (this->isConnected())
 	{
-		string message = numberToString(LOGIN) + MESSAGE_DELIMITER + username + MESSAGE_DELIMITER +
-						 password + MESSAGE_DELIMITER;
+		string message = numberToString(LOGIN) + MESSAGE_DELIMITER + username + MESSAGE_DELIMITER
+						 + password + MESSAGE_DELIMITER + listen_port + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
 		if (this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES) > 0)
@@ -222,9 +222,9 @@ string ServerCommunicator::openChat(string username)
 		{
 			vector<string> parsedData = split(buffer, MESSAGE_DELIMITER);
 
-			if(parsedData[0] == numberToString(SUCCESS) && parsedData.size() > 1)
+			if(parsedData[0] == numberToString(SUCCESS) && parsedData.size() > 2)
 			{
-				return parsedData[1];
+				return parsedData[1] + MESSAGE_DELIMITER + parsedData[2];
 			}
 		}
 		else
@@ -398,11 +398,11 @@ void ServerCommunicator::disconnect()
 	}
 }
 
-string ServerCommunicator::checkInitChat(string address)
+string ServerCommunicator::checkInitChat(string address, string port)
 {
 	if (this->isConnected())
 	{
-		string message = numberToString(CONNECT_TO_PEER_RUN) + MESSAGE_DELIMITER + address + MESSAGE_DELIMITER;
+		string message = numberToString(CONNECT_TO_PEER_RUN) + MESSAGE_DELIMITER + address + MESSAGE_DELIMITER + port + MESSAGE_DELIMITER;
 		this->tcpsock->send(message);
 		char buffer[MAX_MESSAGE_BYTES];
 		if (this->tcpsock->recv(buffer, MAX_MESSAGE_BYTES) > 0)

@@ -316,7 +316,7 @@ bool Engine::login(string username, string password)
 	if (this->serverCommunicator->isConnected())
 	{
 		this->username = username;
-		if (this->serverCommunicator->login(username, password))
+		if (this->serverCommunicator->login(username, password,this->udpListener->get_listen_port()))
 		{
 			this->username = username;
 			return true;
@@ -347,11 +347,14 @@ bool Engine::openChat(string username)
 {
 	if (this->status == NO_OPEN_SESSION)
 	{
-		string address = this->serverCommunicator->openChat(username);
+		string address_port = this->serverCommunicator->openChat(username);
+		vector<string> address_port_vector = split(address_port, MESSAGE_DELIMITER);
 
-		if (username != "")
+		if (address_port_vector.size() >= 1)
 		{
-			this->userChat = new UserChat(address, username);
+			this->userChat = new UserChat(address_port_vector[0], username,
+									      this->udpListener->get_listen_port(),
+										  address_port_vector[1]);
 			if (this->userChat->initiateChat())
 			{
 				this->status = OPEN_USER_CHAT;
@@ -387,7 +390,7 @@ bool Engine::openChatRoom(string roomName)
 			vector<string> roomUsersList = split(buffer, MESSAGE_DELIMITER);
 			if(roomUsersList.size() > 0 && roomUsersList[0] == numberToString(SUCCESS))
 			{
-				this->chatRoom = new ChatRoom(roomUsersList, this->username);
+				this->chatRoom = new ChatRoom(roomUsersList, this->username, this->udpListener->get_listen_port());
 				this->status = OPEN_CHAT_ROOM;
 				cout << "you are now in chat room " << roomName << endl;
 				return true;
@@ -533,13 +536,13 @@ bool Engine::destroyChatRoom(string roomName)
 	return true;
 }
 
-void Engine::acceptChat(string address)
+void Engine::acceptChat(string address, string port)
 {
-	string username = this->serverCommunicator->checkInitChat(address);
+	string username = this->serverCommunicator->checkInitChat(address, port);
 
 	if (username != "")
 	{
-		this->userChat = new UserChat(address, username);
+		this->userChat = new UserChat(address, username, this->udpListener->get_listen_port(), port);
 		this->userChat->acceptChat();
 		this->status = OPEN_USER_CHAT;
 	}

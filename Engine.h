@@ -43,7 +43,7 @@ public:
 	void disconnectChat();
 	bool initiateChatRoom(string roomName);
 	bool destroyChatRoom(string roomName);
-	void acceptChat(string address);
+	void acceptChat(string address, string port);
 	UDPListener* getUdpListener();
 	int getStatus();
 	UserChat* getUserChat();
